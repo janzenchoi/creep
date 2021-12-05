@@ -24,7 +24,6 @@ class ViscoPlastic:
     # Constructor
     def __init__(self, stresses):
         self.params = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
-        self.errors = ['err_area','err_x_end','err_y_end']
         self.l_bnds = [0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0]
         self.u_bnds = [1.0e2, 1.0e2, 1.0e2, 1.0e1, 1.0e5, 1.0e12, 1.0e1, 1.0e2]
         self.stresses = stresses
