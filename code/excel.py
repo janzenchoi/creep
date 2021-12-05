@@ -32,7 +32,7 @@ def read_included(column_name):
 
 # Writes to an excel (appends a number if the filename already exists)
 def write_columns(data, column_names, sheet_name = 'params', file_name = PARAMS_FILE, max_files = 100):
-    df = pd.Dataframe(data, column = column_names)
+    df = pd.DataFrame(data, column = column_names)
     target_file = file_name + '.xlsx'
     for file_num in range(1, max_files):
         try:

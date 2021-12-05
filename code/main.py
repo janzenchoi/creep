@@ -44,3 +44,9 @@ plot.exp_plot(exp_x_data, exp_y_data)
 plot.prd_plot(prd_x_data, prd_y_data)
 plot.save_plot()
 print('The data has been plotted!')
+
+# Writes the data
+excel.write_columns(params_list, visco.params + obj.errors)
+
+# End message
+print('Program has finished in '+str(round(time.time()-start_time))+' seconds!')
