@@ -26,11 +26,11 @@ class Recorder:
 
     # Maintains a sorted list of the top X optimal parameters 
     def update_population(self, params, err_list):
-        total_error = numpy.average(err_list)
+        err_total = numpy.average(err_list)
         
         # If the stored parameters exceed the limit, remove the worst
         if len(self.opt_params) == POPULATION_LIMIT:
-            if self.opt_errors[POPULATION_LIMIT-1] < total_error:
+            if self.opt_errors[-1][-1] < err_total:
                 return
             self.opt_params.pop()
             self.opt_errors.pop()
@@ -38,16 +38,16 @@ class Recorder:
         # Adds new params in order
         inserted = False
         for i in range(0, len(self.opt_params)):
-            if total_error < self.opt_errors[i]:
+            if err_total < self.opt_errors[i][-1]:
                 self.opt_params.insert(i, params)
-                self.opt_errors.insert(i, total_error)
+                self.opt_errors.insert(i, err_list + [err_total])
                 inserted = True
                 break
 
         # If new params is worst between existing params
         if not inserted:
             self.opt_params.append(params)
-            self.opt_errors.append(total_error)
+            self.opt_errors.append(err_list + [err_total])
 
     # Determines whether to record
     def should_record(self):

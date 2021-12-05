@@ -46,7 +46,7 @@ plot.save_plot()
 print('The data has been plotted!')
 
 # Writes the data
-excel.write_columns(params_list, visco.params + obj.errors)
+excel.write_columns(params_list, visco.params)
 
 # End message
 print('Program has finished in '+str(round(time.time()-start_time))+' seconds!')
