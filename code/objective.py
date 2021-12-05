@@ -7,7 +7,6 @@
 
 # Libraries
 import math
-import plot
 import numpy
 from pymoo.model.problem import Problem
 
