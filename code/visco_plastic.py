@@ -17,15 +17,18 @@ S_RATE       = 1.0e-4
 E_RATE       = 1.0e-4
 HOLD         = 11500.0 * 3600.0
 NUM_STEPS    = 501
+PARAMS       = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
+L_BNDS       = [0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0]
+U_BNDS       = [1.0e2, 1.0e2, 1.0e2, 1.0e1, 1.0e5, 1.0e12, 1.0e1, 1.0e2]
 
 # The Visco-Plastic model class
 class ViscoPlastic:
 
     # Constructor
     def __init__(self, stresses):
-        self.params = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
-        self.l_bnds = [0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0]
-        self.u_bnds = [1.0e2, 1.0e2, 1.0e2, 1.0e1, 1.0e5, 1.0e12, 1.0e1, 1.0e2]
+        self.params = PARAMS
+        self.l_bnds = L_BNDS
+        self.u_bnds = U_BNDS
         self.stresses = stresses
 
     # Creates the model

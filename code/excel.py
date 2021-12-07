@@ -13,7 +13,7 @@ import pandas as pd
 DATA_FILE = '../alloy_617'
 INFO_SHEET = 'info'
 STRAIN_SHEET = 'data'
-PARAMS_FILE  = '../results/params'
+PARAMS_FILE = '../results/params'
 
 # Reads a column of data and returns it in the form of a list
 def read_column(column_name, sheet_name = INFO_SHEET, file_name = DATA_FILE):

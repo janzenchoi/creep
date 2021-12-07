@@ -22,15 +22,24 @@ class MOGA:
     
     # Constructor
     def __init__(self, objective):
+
+        # Initialises the members
         self.objective = objective
+        self.num_gens  = NUM_GENS
+        self.init_pop  = INIT_POP
+        self.offspring = OFFSPRING
+        self.crossover = CROSSOVER
+        self.mutation  = MUTATION
+
+        # Defines the algorithm and termination condition
         self.algo = NSGA2(
-            pop_size     = INIT_POP,
-            n_offsprings = OFFSPRING,
+            pop_size     = self.init_pop,
+            n_offsprings = self.offspring,
             sampling     = get_sampling("real_random"),
-            crossover    = get_crossover("real_sbx", prob=CROSSOVER, eta=10), # simulated binary
-            mutation     = get_mutation("real_pm", prob=MUTATION, eta=15), # polynomial mutation
+            crossover    = get_crossover("real_sbx", prob=self.crossover, eta=10), # simulated binary
+            mutation     = get_mutation("real_pm", prob=self.mutation, eta=15), # polynomial mutation
             eliminate_duplicates = True)
-        self.term = get_termination("n_gen", NUM_GENS)
+        self.term = get_termination("n_gen", self.num_gens)
 
     # Runs the genetic optimisation
     def optimise(self):

@@ -11,9 +11,10 @@ import numpy
 from pymoo.model.problem import Problem
 
 # Constants
-POLY_DEG = 15
+POLY_DEG     = 15
 DATA_DENSITY = 50
-BIG_VALUE = 100
+BIG_VALUE    = 100
+ERRORS       = ['err_area','err_x_end','err_y_end']
 
 # Returns a list of indexes corresponding to thinned data
 def get_thin_indexes(src_data_size, dst_data_size):
@@ -36,10 +37,10 @@ def get_fd(x_list, y_list):
 class Objective(Problem):
 
     # Constructor
-    def __init__(self, visco, exp_x_data, exp_y_data):
+    def __init__(self, model, exp_x_data, exp_y_data):
 
         # Initialise errors
-        self.errors = ['err_area','err_x_end','err_y_end']
+        self.errors = ERRORS
 
         # Initialise experimental data
         self.exp_x_data = exp_x_data
@@ -58,13 +59,13 @@ class Objective(Problem):
         self.avg_mrate = numpy.average(self.exp_mrate)
 
         # Initialise optimisation problem
-        self.visco = visco
+        self.model = model
         super().__init__(
-            n_var    = len(visco.params),
+            n_var    = len(model.params),
             n_obj    = len(self.errors),
             n_constr = 0,
-            xl       = numpy.array(visco.l_bnds),
-            xu       = numpy.array(visco.u_bnds),
+            xl       = numpy.array(model.l_bnds),
+            xu       = numpy.array(model.u_bnds),
             elementwise_evaluation = True)
 
     # Get the area between the experimental and predicted curves
@@ -105,26 +106,34 @@ class Objective(Problem):
         err_mrate = sum([abs(prd_mrate[i] - self.exp_mrate[i]) for i in range(0,len(prd_x_data))])
         return err_mrate / len(prd_x_data) / self.avg_mrate
 
+    # Sets a recorder that records the results during the optimisations
+    def set_recorder(self, rec):
+        self.rec = rec
+
     # Minimises expression 'F' such that the expression 'G <= 0' is satisfied
     def _evaluate(self, params, out, *args, **kwargs):
 
         # Get the predicted curves
-        prd_x_data, prd_y_data = self.visco.get_prd_curves(*params)
-        if prd_x_data == [] or prd_y_data == []:
-            out['F'] = [BIG_VALUE] * len(self.errors)
-            return
+        prd_x_data, prd_y_data = self.model.get_prd_curves(*params)
 
-        # Get the error values
-        err_list = []
-        for err in self.errors:
-            if (err == 'err_area'):
-                err_list.append(self.get_err_area(prd_x_data, prd_y_data))
-            elif (err == 'err_x_end'):
-                err_list.append(self.get_err_x_end(prd_x_data, prd_y_data))
-            elif (err == 'err_y_end'):
-                err_list.append(self.get_err_y_end(prd_x_data, prd_y_data))
-            elif (err == 'err_mrate'):  
-                err_list.append(self.get_err_mrate(prd_x_data, prd_y_data))
+        # Get the errors
+        if prd_x_data == [] or prd_y_data == []:
+            err_list = [BIG_VALUE] * len(self.errors)
+        else:
+            err_list = []
+            for err in self.errors:
+                if (err == 'err_area'):
+                    err_list.append(self.get_err_area(prd_x_data, prd_y_data))
+                elif (err == 'err_x_end'):
+                    err_list.append(self.get_err_x_end(prd_x_data, prd_y_data))
+                elif (err == 'err_y_end'):
+                    err_list.append(self.get_err_y_end(prd_x_data, prd_y_data))
+                elif (err == 'err_mrate'):  
+                    err_list.append(self.get_err_mrate(prd_x_data, prd_y_data))
+
+        # If a recorder was set, then record the results
+        if (self.rec != None):
+            self.rec.update_record(params, err_list)
 
         # Set objective functions
         out['F'] = err_list

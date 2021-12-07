@@ -6,26 +6,37 @@
 """
 
 # Libraries
+import genetic_algorithm
 import plot
+import excel
 import numpy
+import math
 
 # Constants
 RECORD_INTERVAL = 10
-POPULATION_LIMIT = 100
+POPULATION_LIMIT = 10
+RECORD_FILE_NAME = 'recorded_params'
+RECORD_PLOT_NAME = 'recorded_curves'
 
 # The Recorder class
 class Recorder:
 
     # Constructor
-    def __init__(self, init_pop, offspring):
-        self.init_pop = init_pop
-        self.offspring = offspring
-        self.num_evals = 0
+    def __init__(self, model, obj, moga):
+        self.model      = model
+        self.params     = model.params
+        self.errors     = obj.errors
+        self.exp_x_data = obj.exp_x_data
+        self.exp_y_data = obj.exp_y_data
+        self.init_pop   = moga.init_pop
+        self.offspring  = moga.offspring
+        self.num_evals  = 0
         self.opt_params = []
         self.opt_errors = []
 
     # Maintains a sorted list of the top X optimal parameters 
     def update_population(self, params, err_list):
+        params, err_list = list(params), list(err_list)
         err_total = numpy.average(err_list)
         
         # If the stored parameters exceed the limit, remove the worst
@@ -49,8 +60,52 @@ class Recorder:
             self.opt_params.append(params)
             self.opt_errors.append(err_list + [err_total])
 
-    # Determines whether to record
-    def should_record(self):
-        return (self.num_evals - self.init_pop) % self.offspring != 0
+    # Records the results
+    def record_results(self):
+        
+        # Plot the optimal curves
+        params = self.opt_params[0]
+        prd_x_data, prd_y_data = self.model.get_prd_curves(*params)
+        plot.prep_plot()
+        plot.exp_plot(self.exp_x_data, self.exp_y_data)
+        plot.prd_plot(prd_x_data, prd_y_data)
+        plot.save_plot()
+
+        # Writes the top X params and their errors
+        data = []
+        for i in range(0,len(self.opt_params)):
+            data.append(self.opt_params[i] + self.opt_errors[i])
+        data_names = self.params + self.errors + ['err_total']
+        excel.write_columns(data, data_names)
     
-    
+    # Updates the record
+    def update_record(self, params, err_list):
+        
+        # Updates the population
+        self.update_population(params, err_list)
+
+        # Only display record after X generations
+        self.num_evals += 1
+        num_gens = (self.num_evals - self.init_pop) / self.offspring
+        if num_gens > 0 and num_gens % RECORD_INTERVAL == 0:
+            
+            # Gets the num_gens string
+            num_gen_str = "(" + str(round(num_gens)) + ")"
+
+            # Plot the optimal curves
+            params = self.opt_params[0]
+            prd_x_data, prd_y_data = self.model.get_prd_curves(*params)
+            plot.prep_plot()
+            plot.exp_plot(self.exp_x_data, self.exp_y_data)
+            plot.prd_plot(prd_x_data, prd_y_data)
+            plot.save_plot('../results/' + RECORD_PLOT_NAME + " " + num_gen_str)
+
+            # Writes the top X params and their errors
+            data = [self.opt_params[i] + self.opt_errors[i] for i in range(0,len(self.opt_params))]
+            data_names = self.params + self.errors + ['err_total']
+            excel.write_columns(data, data_names, file_name = '../results/' + RECORD_FILE_NAME + " " + num_gen_str)
+
+            # Print out record message
+            print("=======================================================")
+            print("Recorded results " + num_gen_str)
+            print("=======================================================")
