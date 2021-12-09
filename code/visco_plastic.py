@@ -19,7 +19,7 @@ HOLD         = 11500.0 * 3600.0
 NUM_STEPS    = 501
 PARAMS       = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
 L_BNDS       = [0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0, 0.0e0]
-U_BNDS       = [1.0e2, 1.0e2, 1.0e2, 1.0e1, 1.0e5, 1.0e12, 1.0e1, 1.0e2]
+U_BNDS       = [1.0e2, 1.0e2, 1.0e1, 1.0e1, 1.0e4, 1.0e10, 1.0e1, 1.0e1]
 
 # The Visco-Plastic model class
 class ViscoPlastic:

@@ -24,7 +24,7 @@ test_names = excel.read_included('test')
 exp_x_data = [excel.read_column(test_name + '_time', excel.STRAIN_SHEET) for test_name in test_names]
 exp_y_data = [excel.read_column(test_name + '_strain', excel.STRAIN_SHEET) for test_name in test_names]
 exp_stresses = excel.read_included('stress')
-print('The experimental data has been read!')
+print('The experimental data for ' + str(len(test_names)) + ' tests has been read!')
 
 # Prepares the optimisation
 model = visco_plastic.ViscoPlastic(exp_stresses)

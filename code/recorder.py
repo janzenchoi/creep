@@ -6,17 +6,17 @@
 """
 
 # Libraries
-import genetic_algorithm
 import plot
 import excel
 import numpy
-import math
 
 # Constants
 RECORD_INTERVAL = 10
 POPULATION_LIMIT = 10
+RESULTS_PATH     = '../results/'
 RECORD_FILE_NAME = 'recorded_params'
 RECORD_PLOT_NAME = 'recorded_curves'
+TEXT_FILE_NAME   = 'summary'
 
 # The Recorder class
 class Recorder:
@@ -77,7 +77,7 @@ class Recorder:
             data.append(self.opt_params[i] + self.opt_errors[i])
         data_names = self.params + self.errors + ['err_total']
         excel.write_columns(data, data_names)
-    
+
     # Updates the record
     def update_record(self, params, err_list):
         
@@ -98,12 +98,20 @@ class Recorder:
             plot.prep_plot()
             plot.exp_plot(self.exp_x_data, self.exp_y_data)
             plot.prd_plot(prd_x_data, prd_y_data)
-            plot.save_plot('../results/' + RECORD_PLOT_NAME + " " + num_gen_str)
+            plot.save_plot(RESULTS_PATH + RECORD_PLOT_NAME + " " + num_gen_str)
 
             # Writes the top X params and their errors
             data = [self.opt_params[i] + self.opt_errors[i] for i in range(0,len(self.opt_params))]
             data_names = self.params + self.errors + ['err_total']
-            excel.write_columns(data, data_names, file_name = '../results/' + RECORD_FILE_NAME + " " + num_gen_str)
+            excel.write_columns(data, data_names, file_name = RESULTS_PATH + RECORD_FILE_NAME + " " + num_gen_str)
+
+            # Writes the optimal results to a text file
+            file = open(RESULTS_PATH + TEXT_FILE_NAME + '.txt', 'w')
+            summary = 'gens : ' + str(round(num_gens)) + '\n'
+            for i in range(0,len(data_names)):
+                summary += data_names[i] + ' : ' + str(round(data[0][i], 5)) + '\n'
+            file.write(summary)
+            file.close()
 
             # Print out record message
             print("=======================================================")
