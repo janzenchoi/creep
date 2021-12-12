@@ -14,7 +14,7 @@ from pymoo.model.problem import Problem
 POLY_DEG     = 15
 DATA_DENSITY = 50
 BIG_VALUE    = 100
-ERRORS       = ['err_area','err_x_end','err_y_end']
+ERRORS       = ['err_area','err_x_end','err_y_end', 'err_mrate']
 
 # Returns a list of indexes corresponding to thinned data
 def get_thin_indexes(src_data_size, dst_data_size):

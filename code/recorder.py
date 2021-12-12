@@ -84,13 +84,25 @@ class Recorder:
         # Updates the population
         self.update_population(params, err_list)
 
-        # Only display record after X generations
+        # Get number of generations passed
         self.num_evals += 1
         num_gens = (self.num_evals - self.init_pop) / self.offspring
+        
+        # Prepare record
+        data_names = self.params + self.errors + ['err_total']
+
+        # At each generation, write the optimal results to a text file
+        if num_gens > 0 and num_gens % 1 == 0:
+            file = open(RESULTS_PATH + TEXT_FILE_NAME + '.txt', 'w')
+            summary = 'gens : ' + str(round(num_gens)) + '\n'
+            data = self.opt_params[0] + self.opt_errors[0]
+            for i in range(0,len(data_names)):
+                summary += data_names[i] + ' : ' + str(round(data[i], 5)) + '\n'
+            file.write(summary)
+            file.close()
+
+        # After X number of generations, plot and write top results
         if num_gens > 0 and num_gens % RECORD_INTERVAL == 0:
-            
-            # Gets the num_gens string
-            num_gen_str = "(" + str(round(num_gens)) + ")"
 
             # Plot the optimal curves
             params = self.opt_params[0]
@@ -98,22 +110,11 @@ class Recorder:
             plot.prep_plot()
             plot.exp_plot(self.exp_x_data, self.exp_y_data)
             plot.prd_plot(prd_x_data, prd_y_data)
-            plot.save_plot(RESULTS_PATH + RECORD_PLOT_NAME + " " + num_gen_str)
+            plot.save_plot(RESULTS_PATH + RECORD_PLOT_NAME + " " + "(" + str(round(num_gens)) + ")")
 
             # Writes the top X params and their errors
             data = [self.opt_params[i] + self.opt_errors[i] for i in range(0,len(self.opt_params))]
             data_names = self.params + self.errors + ['err_total']
-            excel.write_columns(data, data_names, file_name = RESULTS_PATH + RECORD_FILE_NAME + " " + num_gen_str)
+            excel.write_columns(data, data_names, file_name = RESULTS_PATH + RECORD_FILE_NAME + " " + "(" + str(round(num_gens)) + ")")
 
-            # Writes the optimal results to a text file
-            file = open(RESULTS_PATH + TEXT_FILE_NAME + '.txt', 'w')
-            summary = 'gens : ' + str(round(num_gens)) + '\n'
-            for i in range(0,len(data_names)):
-                summary += data_names[i] + ' : ' + str(round(data[0][i], 5)) + '\n'
-            file.write(summary)
-            file.close()
-
-            # Print out record message
-            print("=======================================================")
-            print("Recorded results " + num_gen_str)
-            print("=======================================================")
+            
