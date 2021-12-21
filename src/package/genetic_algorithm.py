@@ -6,14 +6,14 @@
 """
 
 # Libraries
-from pymoo.algorithms.nsga2 import NSGA2
+from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.factory import get_sampling, get_crossover, get_mutation, get_termination
 from pymoo.optimize import minimize
 
 # Constants
-NUM_GENS  = 1000
-INIT_POP  = 500
-OFFSPRING = 500
+NUM_GENS  = 1
+INIT_POP  = 5
+OFFSPRING = 5
 CROSSOVER = 0.65 # 0.65
 MUTATION  = 0.35 # 0.35
 

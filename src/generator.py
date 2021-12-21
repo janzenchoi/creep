@@ -60,7 +60,7 @@ def main():
     data_names = model.params + ERRORS
     for i in range(0,len(exp_stresses)):
         data = [list(params_list[j]) + errors_list[i][j] for j in range(0,len(params_list))]
-        xl = excel.Excel(path = RESULTS_PATH, file = 'params_' + str(exp_stresses[i]) + '_MPa', sheet = 'params')
+        xl = excel.Excel(path = RESULTS_PATH, file = 'params_' + str(exp_stresses[i]), sheet = 'params')
         xl.append_data(data, data_names)
     print('Results have been written!')
 

@@ -8,7 +8,7 @@
 # Libraries
 import math
 import numpy as np
-from pymoo.model.problem import Problem
+from pymoo.core.problem import ElementwiseProblem
 
 # Constants
 POLY_DEG     = 15
@@ -34,7 +34,7 @@ def get_fd(x_list, y_list):
     return dy_list
 
 # The Objective class
-class Objective(Problem):
+class Objective(ElementwiseProblem):
 
     # Constructor
     def __init__(self, model, exp_x_data, exp_y_data):
@@ -62,8 +62,7 @@ class Objective(Problem):
             n_obj    = len(self.errors),
             n_constr = 0,
             xl       = np.array(model.l_bnds),
-            xu       = np.array(model.u_bnds),
-            elementwise_evaluation = True)
+            xu       = np.array(model.u_bnds))
 
     # Get the area between the experimental and predicted curves
     def get_err_area(self, prd_x_data, prd_y_data):
