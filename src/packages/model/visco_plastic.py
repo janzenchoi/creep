@@ -20,7 +20,8 @@ NUM_STEPS    = 501
 MIN_DATA     = DATA_DENSITY
 PARAMS       = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
 L_BNDS       = [0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1]
-U_BNDS       = [1.0e2, 1.0e2, 1.0e1, 1.0e1, 1.0e4, 1.0e10, 1.0e1, 1.0e1]
+U_BNDS       = [1.0e3, 1.0e3, 1.0e2, 1.0e2, 1.0e5, 1.0e11, 1.0e2, 1.0e2]
+# U_BNDS       = [1.0e2, 1.0e2, 1.0e1, 1.0e1, 1.0e4, 1.0e10, 1.0e1, 1.0e1]
 
 # The Visco-Plastic model class
 class ViscoPlastic:
@@ -63,7 +64,7 @@ class ViscoPlastic:
             prd_y_list = list(creep_results['rstrain'])
             
             # Make sure predictions contain more than MIN_DATA data points
-            if (len(prd_x_list) <= MIN_DATA or len(prd_y_list) <= MIN_DATA):
+            if len(prd_x_list) <= MIN_DATA or len(prd_y_list) <= MIN_DATA:
                 return [], []
             prd_x_data.append(prd_x_list)
             prd_y_data.append(prd_y_list)

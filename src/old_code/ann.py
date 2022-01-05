@@ -38,7 +38,11 @@ TEST_SIZE = 1000
 
 # Main function
 def main():
-    pass
+
+    model = get_model()
+    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
+    model.loss = 'mean_squared_error'
+    
 
 # Defines the ANN model
 def get_model():

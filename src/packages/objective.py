@@ -8,13 +8,14 @@
 # Libraries
 import math
 import numpy as np
+from packages import polyfier
 from pymoo.core.problem import ElementwiseProblem
 
 # Constants
-POLY_DEG     = 15
-DATA_DENSITY = 50
-BIG_VALUE    = 100
-ERRORS       = ['err_area','err_x_end','err_y_end', 'err_mrate']
+POLY_DEG    = polyfier.DEFAULT_POLY_DEG
+NUM_POINTS  = polyfier.DEFAULT_NUM_POINTS
+BIG_VALUE   = 100
+ERRORS      = ['err_area', 'err_x_end', 'err_y_end', 'err_mrate']
 
 # Returns a list of indexes corresponding to thinned data
 def get_thin_indexes(src_data_size, dst_data_size):
@@ -39,17 +40,17 @@ class Objective(ElementwiseProblem):
     # Constructor
     def __init__(self, model, exp_x_data, exp_y_data):
 
-        # Initialise errors
-        self.errors = ERRORS
-
-        # Initialise recorder
+        # Initialise
+        self.errors = [error + '_' + str(stress) for stress in model.stresses for error in ERRORS]
         self.rec = None
+        self.pf = polyfier.Polyfier(POLY_DEG, NUM_POINTS)
 
         # Initialise experimental data
         self.exp_x_data, self.exp_y_data = exp_x_data, exp_y_data
         self.exp_poly, self.exp_x_end, self.exp_y_end, self.exp_mrate = [], [], [], []
         for i in range(0,len(exp_x_data)):
-            self.exp_poly.append(list(np.polyfit(exp_x_data[i], exp_y_data[i], POLY_DEG)))
+            _, polynomial = self.pf.curve_to_polynomial(exp_x_data[i], exp_y_data[i])
+            self.exp_poly.append(polynomial)
             self.exp_x_end.append(max(exp_x_data[i]))
             self.exp_y_end.append(exp_y_data[i][exp_x_data[i].index(max(exp_x_data[i]))])
             self.exp_mrate.append(min(np.polyval(np.polyder(self.exp_poly[i]), exp_x_data[i])))
@@ -70,14 +71,14 @@ class Objective(ElementwiseProblem):
         for i in range(0, len(prd_x_data)):
             
             # Thins the predicted and experimental data
-            thin_indexes = get_thin_indexes(len(prd_x_data[i]), DATA_DENSITY)
+            thin_indexes = get_thin_indexes(len(prd_x_data[i]), NUM_POINTS)
             prd_x_list = [prd_x_data[i][j] for j in thin_indexes]
             prd_y_list = [prd_y_data[i][j] for j in thin_indexes]
             exp_y_list = list(np.polyval(self.exp_poly[i], prd_x_list))
 
             # Consider the area only between the two curves
             area, valid_points = 0, 0
-            for j in range(0, DATA_DENSITY):
+            for j in range(0, NUM_POINTS):
                 if prd_x_list[j] <= self.exp_x_end[i]:
                     area += abs(prd_y_list[j] - exp_y_list[j])
                     valid_points += 1
@@ -119,15 +120,15 @@ class Objective(ElementwiseProblem):
             err_list = [BIG_VALUE] * len(self.errors)
         else:
             err_list = []
-            for err in self.errors:
+            for err in ERRORS:
                 if (err == 'err_area'):
-                    err_list.append(np.average(self.get_err_area(prd_x_data, prd_y_data)))
+                    err_list += self.get_err_area(prd_x_data, prd_y_data)
                 elif (err == 'err_x_end'):
-                    err_list.append(np.average(self.get_err_x_end(prd_x_data, prd_y_data)))
+                    err_list += self.get_err_x_end(prd_x_data, prd_y_data)
                 elif (err == 'err_y_end'):
-                    err_list.append(np.average(self.get_err_y_end(prd_x_data, prd_y_data)))
+                    err_list += self.get_err_y_end(prd_x_data, prd_y_data)
                 elif (err == 'err_mrate'):  
-                    err_list.append(np.average(self.get_err_mrate(prd_x_data, prd_y_data)))
+                    err_list += self.get_err_mrate(prd_x_data, prd_y_data)
 
         # If a recorder was set, then record the results
         if (self.rec != None):

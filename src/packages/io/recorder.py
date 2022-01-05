@@ -12,7 +12,7 @@ import numpy as np
 
 # Constants
 RECORD_INTERVAL = 10
-POPULATION_LIMIT = 5000
+POPULATION_LIMIT = 50
 DEFAULT_PATH = './'
 RECORD_FILE_NAME = 'params'
 RECORD_PLOT_NAME = 'curves'

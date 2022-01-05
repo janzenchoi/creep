@@ -39,6 +39,13 @@ class Excel:
         data = [d[0] for d in data]
         return data
 
+    # Reads multuple columns of data
+    def read_columns(self, columns, path = '', file = '', sheet = ''):
+        path, file, sheet = self.set_default(path, file, sheet)
+        data = [self.read_column(column = column) for column in columns]
+        data = [[column[i] for column in data] for i in range(0, len(data[0]))]
+        return data
+
     # Gets a list of data only for the included tests
     def read_included(self, column):
         info_list = self.read_column(column = column, sheet = 'info')
@@ -73,3 +80,13 @@ class Excel:
         # Append new data to old data and write
         df = pd.DataFrame(data, columns = columns)
         df.to_excel(path + file + '.xlsx', sheet_name = sheet)
+
+# Prepends a column to a 2D list (assumes same number of rows)
+def prepend_column(list_2D, column):
+    list_2D = [[column[i] + list_2D[i]] for i in range(0, len(list_2D))]
+    return list_2D
+
+# Appends a column to a 2D list (assumes same number of rows)
+def append_column(list_2D, column):
+    list_2D = [list_2D[i] + [column[i]] for i in range(0, len(list_2D))]
+    return list_2D

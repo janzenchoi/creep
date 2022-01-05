@@ -10,14 +10,16 @@ import time
 import math
 import random
 import numpy as np
+import packages.polyfier as polyfier
 import packages.io.excel as excel
 import packages.model.visco_plastic as visco_plastic
+import packages.io.plotter as plotter
 
 # General Constants
-POLY_DEG        = 15
-DATA_DENSITY    = 50
-NUM_SAMPLES     = 10000
-STRESSES        = [80]
+POLY_DEG    = polyfier.DEFAULT_POLY_DEG
+NUM_POINTS  = polyfier.DEFAULT_NUM_POINTS
+NUM_SAMPLES = 10000
+STRESSES    = [80]
 
 # Model Constants
 PARAMS       = visco_plastic.PARAMS
@@ -28,11 +30,11 @@ U_BNDS       = visco_plastic.U_BNDS
 DATA_PATH       = './'
 DATA_FILE       = 'alloy_617'
 PARAMS_PATH     = './'
-PARAMS_FILE     = 'good_params_80'
+PARAMS_FILE     = 'custom'
 PARAMS_SHEET    = 'params'
 RESULTS_PATH    = './results/'
-RESULTS_FILE    = 'generated_'
-RESULTS_SHEET   = 'generated'
+RESULTS_FILE    = 'custom'
+RESULTS_SHEET   = 'params'
 
 # The main function
 def main():
@@ -55,7 +57,7 @@ def main():
     # Gets the outputs and writes it for each stress
     for stress in STRESSES:
         output_list = get_outputs(params_list, stress)
-        xl.append_data(data = output_list, columns = output_columns, file = RESULTS_FILE + str(stress))
+        xl.append_data(data = output_list, columns = output_columns, file = RESULTS_FILE)
         print('Finished recording values at ' + str(stress) + ' MPa!')
 
     # End message
@@ -101,7 +103,7 @@ def get_outputs(params_list, stress):
             continue
 
         # Sparsen the data
-        thin_indexes = get_thin_indexes(len(x_data[0]), DATA_DENSITY)
+        thin_indexes = get_thin_indexes(len(x_data[0]), NUM_POINTS)
         x_list = [x_data[0][j] for j in thin_indexes]
         y_list = [y_data[0][j] for j in thin_indexes]
 
@@ -109,6 +111,13 @@ def get_outputs(params_list, stress):
         x_end, y_end = max(x_list), max(y_list)
         polynomial = list(np.polyfit(x_list, y_list, POLY_DEG))
         output_list.append(params_list[i] + [x_end, y_end] + polynomial)
+
+        # # Plots the curves
+        # plt = plotter.Plotter(RESULTS_PATH, "plot_" + str(i))
+        # plt.prep_plot()
+        # plt.exp_plot([x_list], [y_list])
+        # plt.prd_plot([x_list], [list(np.polyval(polynomial, x_list))])
+        # plt.save_plot()
 
     # Return the output list
     return output_list

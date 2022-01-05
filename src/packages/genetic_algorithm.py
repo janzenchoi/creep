@@ -14,8 +14,8 @@ from pymoo.optimize import minimize
 NUM_GENS  = 10000
 INIT_POP  = 500
 OFFSPRING = 500
-CROSSOVER = 0.65 # 0.65
-MUTATION  = 0.35 # 0.35
+CROSSOVER = 0.65
+MUTATION  = 0.35
 
 # The Multi-Objective Genetic Algorithm (MOGA) class
 class MOGA:
@@ -38,7 +38,8 @@ class MOGA:
             sampling     = get_sampling("real_random"),
             crossover    = get_crossover("real_sbx", prob=self.crossover, eta=10), # simulated binary
             mutation     = get_mutation("real_pm", prob=self.mutation, eta=15), # polynomial mutation
-            eliminate_duplicates = True)
+            eliminate_duplicates = True
+        )
         self.term = get_termination("n_gen", self.num_gens)
 
     # Runs the genetic optimisation
