@@ -10,3 +10,8 @@ The following are instructions to install and run the program.
 2) Clone the repository by running `git clone https://github.com/jazzzmannn/creep`.
 3) Change to the directory with the code by running `cd creep/code`.
 4) Run the code by running `python main.py`.
+
+# Useful Linux Commands
+
+1) `nohup python3 <filename>.py &` to run a Python program in the background.
+2) `kill -9 <pid>` to kill a Python process in the background.
