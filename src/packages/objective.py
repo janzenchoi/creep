@@ -41,7 +41,7 @@ class Objective(ElementwiseProblem):
     def __init__(self, model, exp_x_data, exp_y_data):
 
         # Initialise
-        self.errors = [error + '_' + str(stress) for stress in model.stresses for error in ERRORS]
+        self.errors = [error + '_' + str(stress) for error in ERRORS for stress in model.stresses]
         self.rec = None
         self.pf = polyfier.Polyfier(POLY_DEG, NUM_POINTS)
 

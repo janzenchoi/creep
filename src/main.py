@@ -16,7 +16,7 @@ import packages.genetic_algorithm as genetic_algorithm
 # Constants
 DATA_PATH = './'
 DATA_FILE = 'alloy_617'
-RECORD_PATH = './results/optimisation/'
+RECORD_PATH = './results/optimisation2/'
 
 # Initialisation
 start_time = time.time()

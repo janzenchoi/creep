@@ -12,10 +12,10 @@ from pymoo.optimize import minimize
 
 # Constants
 NUM_GENS  = 10000
-INIT_POP  = 500
-OFFSPRING = 500
-CROSSOVER = 0.65
-MUTATION  = 0.35
+INIT_POP  = 1000
+OFFSPRING = 1000
+CROSSOVER = 0.35
+MUTATION  = 0.65
 
 # The Multi-Objective Genetic Algorithm (MOGA) class
 class MOGA:
@@ -35,7 +35,7 @@ class MOGA:
         self.algo = NSGA2(
             pop_size     = self.init_pop,
             n_offsprings = self.offspring,
-            sampling     = get_sampling("real_random"),
+            sampling     = get_sampling("real_lhs"), # real_random
             crossover    = get_crossover("real_sbx", prob=self.crossover, eta=10), # simulated binary
             mutation     = get_mutation("real_pm", prob=self.mutation, eta=15), # polynomial mutation
             eliminate_duplicates = True
