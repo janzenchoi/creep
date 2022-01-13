@@ -25,6 +25,7 @@ class Sampler:
     # Constructor
     def __init__(self):
         xl = excel.Excel(path = INPUT_PATH, file = INPUT_FILE, sheet = INPUT_SHEET)
+        print(PARAMS_LIST)
         self.params_list = xl.read_columns(columns = PARAMS_LIST)
         self.x_end_list  = xl.read_column(column = 'x_end')
         self.coeffs_list = xl.read_columns(columns = COEFFS_LIST)
@@ -45,7 +46,7 @@ class Sampler:
         pf = polyfier.Polyfier()
         for i in index_list:
             _, y_list = pf.polynomial_to_curve(self.x_end_list[i], self.coeffs_list[i])
-            output_list.append([self.x_end_list[i]] + y_list)
+            output_list.append(y_list)
 
         # Return input and output
         return input_list, output_list
