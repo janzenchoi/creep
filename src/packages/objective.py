@@ -41,9 +41,9 @@ class Objective(ElementwiseProblem):
     def __init__(self, model, exp_x_data, exp_y_data):
 
         # Initialise
-        self.errors = [error + '_' + str(stress) for error in ERRORS for stress in model.stresses]
         self.rec = None
         self.pf = polyfier.Polyfier(POLY_DEG, NUM_POINTS)
+        self.errors = ERRORS
 
         # Initialise experimental data
         self.exp_x_data, self.exp_y_data = exp_x_data, exp_y_data
@@ -120,16 +120,16 @@ class Objective(ElementwiseProblem):
             err_list = [BIG_VALUE] * len(self.errors)
         else:
             err_list = []
-            for err in ERRORS:
+            for err in self.errors:
                 if (err == 'err_area'):
-                    err_list += self.get_err_area(prd_x_data, prd_y_data)
+                    err_list.append(np.average(self.get_err_area(prd_x_data, prd_y_data)))
                 elif (err == 'err_x_end'):
-                    err_list += self.get_err_x_end(prd_x_data, prd_y_data)
+                    err_list.append(np.average(self.get_err_x_end(prd_x_data, prd_y_data)))
                 elif (err == 'err_y_end'):
-                    err_list += self.get_err_y_end(prd_x_data, prd_y_data)
+                    err_list.append(np.average(self.get_err_y_end(prd_x_data, prd_y_data)))
                 elif (err == 'err_mrate'):  
-                    err_list += self.get_err_mrate(prd_x_data, prd_y_data)
-
+                    err_list.append(np.average(self.get_err_mrate(prd_x_data, prd_y_data)))
+        
         # If a recorder was set, then record the results
         if (self.rec != None):
             self.rec.update_record(params, err_list)

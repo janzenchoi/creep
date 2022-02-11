@@ -25,7 +25,6 @@ class Sampler:
     # Constructor
     def __init__(self):
         xl = excel.Excel(path = INPUT_PATH, file = INPUT_FILE, sheet = INPUT_SHEET)
-        print(PARAMS_LIST)
         self.params_list = xl.read_columns(columns = PARAMS_LIST)
         self.x_end_list  = xl.read_column(column = 'x_end')
         self.coeffs_list = xl.read_columns(columns = COEFFS_LIST)

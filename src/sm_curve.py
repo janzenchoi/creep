@@ -7,6 +7,7 @@
 
 # Libraries
 import time
+import numpy as np
 import packages.surrogate as surrogate
 import packages.sampler as sampler
 
