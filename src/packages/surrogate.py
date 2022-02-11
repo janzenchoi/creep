@@ -39,28 +39,14 @@ class Surrogate:
 
         # Compare with expected output
         for i in range(0, len(input_list)):
-
-            # Gets the expected y values
-            exp_x_end  = output_list[i][0]
-            exp_x_list = self.pf.get_x_list(exp_x_end)
-            exp_y_list = output_list[i][1:]
             
-            # Gets the expected and predicted y lists
-            prd_x_end  = prd_output_list[i][0]
-            prd_x_list = self.pf.get_x_list(prd_x_end)
-            prd_y_list = prd_output_list[i][1:]
-
-            # Gets the errors
-            err_x_end = abs(exp_x_end - prd_x_end) / exp_x_end
-            err_y_end = abs(exp_y_list[-1] - prd_y_list[-1]) / exp_y_list[-1]
-            err_area = np.average([abs(exp_y_list[j] - prd_y_list[j]) / exp_y_list[j] for j in range(0, min(len(exp_y_list), len(prd_y_list)))])
-
-            # Prints out the error
-            print('[Test ' + str(i) + ']')
-            print(' err_x_end = ' + str(round(err_x_end, 3)))
-            print(' err_y_end = ' + str(round(err_y_end, 3)))
-            print(' err_area  = ' + str(round(err_area, 3)))
-            print()
+            # Gets the expected curves
+            exp_y_list = output_list[i]
+            exp_x_list = self.pf.get_x_list(len(exp_y_list))
+            
+            # Gets the predicted curves
+            prd_y_list = prd_output_list[i]
+            prd_x_list = self.pf.get_x_list(len(prd_y_list))
 
             # Plots the curves
             plt = plotter.Plotter(MODEL_PATH, 'sm_' + str(i))

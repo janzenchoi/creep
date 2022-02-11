@@ -45,7 +45,7 @@ class Sampler:
         pf = polyfier.Polyfier()
         for i in index_list:
             _, y_list = pf.polynomial_to_curve(self.x_end_list[i], self.coeffs_list[i])
-            output_list.append([self.x_end_list[i]] + y_list)
+            output_list.append(y_list)
 
         # Return input and output
         return input_list, output_list

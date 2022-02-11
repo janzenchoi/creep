@@ -12,10 +12,10 @@ from pymoo.optimize import minimize
 
 # Constants
 NUM_GENS  = 10000
-INIT_POP  = 1000
-OFFSPRING = 1000
-CROSSOVER = 0.35
-MUTATION  = 0.65
+INIT_POP  = 500
+OFFSPRING = 500
+CROSSOVER = 0.65
+MUTATION  = 0.35
 
 # The Multi-Objective Genetic Algorithm (MOGA) class
 class MOGA:
