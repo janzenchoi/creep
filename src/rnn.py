@@ -131,7 +131,7 @@ def get_model(training_inputs, training_outputs):
     model = keras.Sequential()
     model.add(layers.Embedding(input_dim = len(training_inputs[0]), output_dim = 256))
     model.add(layers.GRU(units = 128, return_sequences = True))
-    model.add(layers.SimpleRNN(units = 64))
+    # model.add(layers.SimpleRNN(units = 64))
     # model.add(layers.Dropout(0.25))
     
     # Dense hidden layer (with regulariser)
@@ -142,7 +142,7 @@ def get_model(training_inputs, training_outputs):
 
     # Build and compile the model
     model.build((None, None, len(training_inputs[0])))
-    model.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics = ['accuracy'])
+    model.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics = [keras.metrics.RootMeanSquaredError(), 'mean_absolute_percentage_error'])
 
     # Save and return the model
     # model.save_weights(MODEL_PATH + MODEL_FILE)

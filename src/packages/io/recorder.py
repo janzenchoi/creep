@@ -13,7 +13,7 @@ import time
 import numpy as np
 
 # Constants
-RECORD_INTERVAL = 10
+RECORD_INTERVAL = 50
 POPULATION_LIMIT = 50
 DEFAULT_PATH = './'
 DEFAULT_FOLDER = 'folder'
