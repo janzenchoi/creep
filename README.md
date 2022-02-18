@@ -12,7 +12,7 @@ The following are instructions to install and run the program. Running the progr
 2) Clone the repository by running `git clone https://github.com/jazzzmannn/creep/`.
 3) Change to the directory with the code by running `cd creep/src/`.
 4) Run the code by running `python main.py`.
-5) The results will be stored in `src/results/`.
+5) The results will be stored in `creep/src/results/`.
 
 # Configuration
 
