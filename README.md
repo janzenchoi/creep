@@ -28,9 +28,9 @@ You can easily change the settings of the optimisation.
 I have implemented a 'recorder' class, located at `creep/src/packages/io/recorder.py`.
 
 * The class will store the results every 50 generations, so that a full run of the optimisation is not required to retrieve results.
-* The class will also store the results of the latest generation, with a summary of the optimisation settings, the progress of the optimisation, and the best set of parameters so far.
+* The class will also store the results of the latest generation, with a summary of the optimisation settings, and the general progress of the optimisation.
 * The purpose of this class is to prevent the loss of results if the program were to halt (e.g., crash).
-* When multiple instances of `main.py`, the recorder will pipe the results for each optimisation into different directories.
+* When running multiple instances of `main.py`, the recorder will pipe the results for each optimisation into different directories.
 
 # Running Multiple Instances
 
