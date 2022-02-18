@@ -2,6 +2,8 @@
 
 The repository contains a program that uses the Visco-Plastic (V-P) model to predict the creep behaviour of Alloy 617. The V-P model contains 8 material parameters, which are determined using the Multi-Objective Genetic Algorithm (MOGA).
 
+This `README.md` file was last updated on 18/02/2022.
+
 # Instructions
 
 The following are instructions to install and run the program. Running the program will read the experimental data and conditions from `creep/src/alloy_617.xlsx`, and execute the MOGA to optimise the parameters of the V-P model.
