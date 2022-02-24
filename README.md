@@ -18,7 +18,7 @@ The following are instructions to install and run the program. Running the progr
 
 You can easily change the settings of the optimisation.
 
-* To include/exclude certain creep curves in the optimisation, go to `creep/src/alloy_617.xlsx`, and toggle TRUE/FALSE in the include column (of the `info` sheet).
+* To include/exclude certain creep curves in the optimisation, change the constant `TEST_NAMES` array in `creep/src/main.py`.
 * To change the hyperparameters of the MOGA, change the constant values in `creep/src/packages/genetic_algorithm.py`.
 * To change which of the objective functions to use, change the constant array in `creep/src/packages/objective.py`.
 * To change the input/output paths/names, change the constant strings in `creep/src/main.py`.
