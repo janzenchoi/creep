@@ -18,7 +18,7 @@ DATA_PATH = './'
 DATA_FILE = 'alloy_617'
 RECORD_PATH = './results/'
 RECORD_FOLDER = 'optimisation'
-TEST_NAMES = ['G32', 'G33', 'G44', 'G25']
+TEST_NAMES = ['G32', 'G25'] # ['G32', 'G33', 'G44', 'G25']
 
 # Initialisation
 start_time = time.time()

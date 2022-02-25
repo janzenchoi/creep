@@ -11,13 +11,11 @@ from neml import models, elasticity, drivers, surfaces, hardening, visco_flow, g
 # Constants
 YOUNGS       = 157000.0
 POISSONS     = 0.3
-POLY_DEG     = 15
-DATA_DENSITY = 50
 S_RATE       = 1.0e-4
 E_RATE       = 1.0e-4
 HOLD         = 11500.0 * 3600.0
 NUM_STEPS    = 501
-MIN_DATA     = DATA_DENSITY
+MIN_DATA     = 50
 PARAMS       = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
 L_BNDS       = [0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1, 0.0e1]
 U_BNDS       = [1.0e2, 1.0e2, 1.0e1, 1.0e1, 1.0e4, 1.0e10, 1.0e1, 1.0e1]
