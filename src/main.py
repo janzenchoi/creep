@@ -18,6 +18,7 @@ DATA_PATH = './'
 DATA_FILE = 'alloy_617'
 RECORD_PATH = './results/'
 RECORD_FOLDER = 'optimisation'
+TEST_NAMES = ['G32', 'G33', 'G44', 'G25']
 
 # Initialisation
 start_time = time.time()
@@ -25,11 +26,10 @@ print('Program began on ' + time.strftime('%A, %D, %H:%M:%S', time.localtime()) 
 
 # Gets the experimental data
 xl = excel.Excel(path = DATA_PATH, file = DATA_FILE)
-test_names = xl.read_included('test')
-exp_x_data = [xl.read_column(column = test_name + '_time', sheet = 'data') for test_name in test_names]
-exp_y_data = [xl.read_column(column = test_name + '_strain', sheet = 'data') for test_name in test_names]
-exp_stresses = xl.read_included('stress')
-print('The experimental data for ' + str(len(test_names)) + ' test(s) has been read!')
+exp_x_data = [xl.read_column(column = test_name + '_time', sheet = 'data') for test_name in TEST_NAMES]
+exp_y_data = [xl.read_column(column = test_name + '_strain', sheet = 'data') for test_name in TEST_NAMES]
+exp_stresses = xl.read_included('stress', TEST_NAMES)
+print('The experimental data for ' + str(len(TEST_NAMES)) + ' test(s) has been read!')
 
 # Prepares the optimisation
 model = visco_plastic.ViscoPlastic(exp_stresses)

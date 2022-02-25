@@ -15,7 +15,8 @@ from pymoo.core.problem import ElementwiseProblem
 POLY_DEG    = polyfier.DEFAULT_POLY_DEG
 NUM_POINTS  = polyfier.DEFAULT_NUM_POINTS
 BIG_VALUE   = 100
-ERRORS      = ['err_area', 'err_x_end', 'err_y_end', 'err_mrate']
+# ERRORS      = ['err_area', 'err_x_end', 'err_y_end', 'err_mrate']
+ERRORS      = ['err_x_end', 'err_mrate']
 
 # Returns a list of indexes corresponding to thinned data
 def get_thin_indexes(src_data_size, dst_data_size):

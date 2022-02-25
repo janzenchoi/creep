@@ -47,10 +47,10 @@ class Excel:
         return data
 
     # Gets a list of data only for the included tests
-    def read_included(self, column):
+    def read_included(self, column, test_names):
         info_list = self.read_column(column = column, sheet = 'info')
-        include_list = self.read_column(column = 'include', sheet = 'info')
-        info_list = [info_list[i] for i in range(0,len(include_list)) if int(include_list[i]) == 1]
+        test_list = self.read_column(column = 'test', sheet = 'info')
+        info_list = [info_list[i] for i in range(0,len(test_list)) if test_list[i] in test_names]
         return info_list
 
     # Writes to an excel (appends a number if the filename already exists)

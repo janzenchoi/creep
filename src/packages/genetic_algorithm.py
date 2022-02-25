@@ -11,7 +11,7 @@ from pymoo.factory import get_sampling, get_crossover, get_mutation, get_termina
 from pymoo.optimize import minimize
 
 # Constants
-NUM_GENS  = 10000
+NUM_GENS  = 1000
 INIT_POP  = 500
 OFFSPRING = 500
 CROSSOVER = 0.65
