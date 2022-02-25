@@ -12,15 +12,15 @@ The following are instructions to install and run the program. Running the progr
 2) Clone the repository by running `git clone https://github.com/jazzzmannn/creep/`.
 3) Change to the directory with the code by running `cd creep/src/`.
 4) Run the code by running `python main.py`.
-5) The results will be stored in `src/results/`.
+5) The results will be stored in `creep/src/results/`.
 
 # Configuration
 
 You can easily change the settings of the optimisation.
 
-* To include/exclude certain creep curves, go to `creep/src/alloy_617.xlsx`, and toggle TRUE/FALSE in the include column (of the `info` sheet).
+* To include/exclude certain creep curves in the optimisation, change the constant `TEST_NAMES` array in `creep/src/main.py`.
 * To change the hyperparameters of the MOGA, change the constant values in `creep/src/packages/genetic_algorithm.py`.
-* To change the objective functions to use, change the constant array in `creep/src/packages/objective.py`.
+* To change which of the objective functions to use, change the constant array in `creep/src/packages/objective.py`.
 * To change the input/output paths/names, change the constant strings in `creep/src/main.py`.
 
 # Recorder Functionality
@@ -28,9 +28,9 @@ You can easily change the settings of the optimisation.
 I have implemented a 'recorder' class, located at `creep/src/packages/io/recorder.py`.
 
 * The class will store the results every 50 generations, so that a full run of the optimisation is not required to retrieve results.
-* The class will also store the results of the latest generation, with a summary of the optimisation settings, the progress of the optimisation, and the best set of parameters so far.
+* The class will also store the results of the latest generation, with a summary of the optimisation settings, and the general progress of the optimisation.
 * The purpose of this class is to prevent the loss of results if the program were to halt (e.g., crash).
-* When multiple instances of `main.py`, the recorder will pipe the results for each optimisation into different directories.
+* When running multiple instances of `main.py`, the recorder will pipe the results for each optimisation into different directories.
 
 # Running Multiple Instances
 
