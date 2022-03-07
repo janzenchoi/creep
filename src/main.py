@@ -10,15 +10,16 @@ import time
 import packages.io.excel as excel
 import packages.io.recorder as recorder
 import packages.model.visco_plastic as visco_plastic
-import packages.objective as objective
+import packages.error.objective as objective
 import packages.genetic_algorithm as genetic_algorithm
 
 # Constants
-DATA_PATH = './'
-DATA_FILE = 'alloy_617'
-RECORD_PATH = './results/'
-RECORD_FOLDER = 'optimisation'
-TEST_NAMES = ['G32', 'G25'] # ['G32', 'G33', 'G44', 'G25']
+DATA_PATH       = './'
+DATA_FILE       = 'alloy_617'
+RECORD_PATH     = './results/'
+RECORD_FOLDER   = 'optimisation'
+TEST_NAMES      = ['G44','G25'] # ['G32', 'G33', 'G44', 'G25']
+ERR_NAMES       = ['err_dy_min', 'err_x_area', 'err_x_fail'] # ['err_dy_min', 'err_x_area', 'err_y_area', 'err_x_fail', 'err_y_fail']
 
 # Initialisation
 start_time = time.time()
@@ -33,13 +34,13 @@ print('The experimental data for ' + str(len(TEST_NAMES)) + ' test(s) has been r
 
 # Prepares the optimisation
 model = visco_plastic.ViscoPlastic(exp_stresses)
-obj = objective.Objective(model, exp_x_data, exp_y_data)
-moga = genetic_algorithm.MOGA(obj)
+obj = objective.Objective(ERR_NAMES, exp_x_data, exp_y_data)
+moga = genetic_algorithm.MOGA(model, obj)
 rec = recorder.Recorder(model, obj, moga, path = RECORD_PATH, folder = RECORD_FOLDER)
 print('The optimisation has been prepared')
 
 # Conducts the optimisation
-obj.set_recorder(rec)
+moga.set_recorder(rec)
 moga.optimise()
 print('The optimisation has concluded!')
 

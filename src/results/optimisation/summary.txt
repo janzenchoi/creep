@@ -1,0 +1,33 @@
+[Optimisation Settings]:
+ params    = ['s0', 'R', 'd', 'n', 'eta', 'A', 'xi', 'phi']
+ l_bnds    = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+ u_bnds    = [100.0, 100.0, 10.0, 10.0, 10000.0, 10000000000.0, 10.0, 10.0]
+ stresses  = [80]
+ errors    = ['err_dy_min', 'err_x_fail', 'err_y_fail', 'err_x_area', 'err_y_area']
+ num_gens  = 1000
+ init_pop  = 500
+ offspring = 500
+ crossover = 0.65
+ mutation  = 0.35
+
+[Optimisation Progress]:
+ start_time   = Tuesday, 03/08/22, 02:25:05
+ last_updated = Tuesday, 03/08/22, 02:28:47
+ time_elapsed = 221s
+
+[Optimisation Results]:
+ gens = 1
+ s0 = 41.27698
+ R = 63.12907
+ d = 4.46844
+ n = 5.63444
+ eta = 2169.59337
+ A = 2484585775.91182
+ xi = 1.03218
+ phi = 8.89651
+ err_dy_min = 0.99793
+ err_x_fail = 0.08518
+ err_y_fail = 0.99829
+ err_x_area = 0.00201
+ err_y_area = 0.00103
+ err_avg = 0.41689

@@ -6,9 +6,11 @@
 """
 
 # Libraries
+import numpy as np
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.factory import get_sampling, get_crossover, get_mutation, get_termination
 from pymoo.optimize import minimize
+from pymoo.core.problem import ElementwiseProblem
 
 # Constants
 NUM_GENS  = 1000
@@ -21,10 +23,11 @@ MUTATION  = 0.35
 class MOGA:
     
     # Constructor
-    def __init__(self, objective):
+    def __init__(self, model, objective):
 
         # Initialises the members
-        self.objective = objective
+        self.problem = Problem(model, objective)
+        self.rec = None
         self.num_gens  = NUM_GENS
         self.init_pop  = INIT_POP
         self.offspring = OFFSPRING
@@ -42,7 +45,33 @@ class MOGA:
         )
         self.term = get_termination("n_gen", self.num_gens)
 
+    # Sets a recorder that records the results during the optimisations
+    def set_recorder(self, rec):
+        self.problem.rec = rec
+
     # Runs the genetic optimisation
     def optimise(self):
-        params_list = minimize(self.objective, self.algo, self.term, verbose=True, seed=None).X
+        params_list = minimize(self.problem, self.algo, self.term, verbose=True, seed=None).X
         return params_list
+
+# The MOGA problem
+class Problem(ElementwiseProblem):
+
+    # Constructor
+    def __init__(self, model, objective):
+        self.objective = objective
+        self.model = model
+        super().__init__(
+            n_var    = len(self.model.params),
+            n_obj    = len(self.objective.err_collection),
+            n_constr = 0,
+            xl       = np.array(self.model.l_bnds),
+            xu       = np.array(self.model.u_bnds))
+
+    # Minimises expression 'F' such that the expression 'G <= 0' is satisfied
+    def _evaluate(self, params, out, *args, **kwargs):
+        prd_x_data, prd_y_data = self.model.get_prd_curves(*params)
+        err_list = self.objective.get_errors(prd_x_data, prd_y_data)
+        if (self.rec != None):
+            self.rec.update_record(params, err_list)
+        out['F'] = err_list

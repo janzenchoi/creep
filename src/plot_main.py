@@ -16,6 +16,7 @@ DATA_PATH = './'
 DATA_FILE = 'alloy_617'
 PLOT_PATH = './results/'
 PLOT_FILE = 'result_plot'
+SHEET_NAME = 'vp_moga'
 ALL_TEST_NAMES = ['G32', 'G33', 'G44', 'G25']
 TRAIN_TEST_NAMES = ['G44', 'G25']
 
@@ -37,8 +38,8 @@ pt.prep_plot(title = 'Creep at 800°C', xlabel = 'Time (h)', ylabel = 'Creep Str
 pt.exp_plot(exp_x_data, exp_y_data)
 
 # Get parameters
-param_include_list = xl.read_column(column = 'include', sheet = 'vp_params')
-params_list = [xl.read_column(column = param, sheet = 'vp_params') for param in model.params]
+param_include_list = xl.read_column(column = 'include', sheet = SHEET_NAME)
+params_list = [xl.read_column(column = param, sheet = SHEET_NAME) for param in model.params]
 params_list = [[params[i] for params in params_list] for i in range(0, len(params_list[0]))] # transpose
 params_list = [params_list[i] for i in range(0, len(params_list)) if int(param_include_list[i]) == 1]
 

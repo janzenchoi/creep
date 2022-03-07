@@ -30,7 +30,7 @@ class Recorder:
         # Optimisation information
         self.model      = model
         self.params     = model.params
-        self.errors     = obj.errors
+        self.errors     = obj.get_error_names()
         self.exp_x_data = obj.exp_x_data
         self.exp_y_data = obj.exp_y_data
 
