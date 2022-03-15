@@ -18,8 +18,8 @@ DATA_PATH       = './'
 DATA_FILE       = 'alloy_617'
 RECORD_PATH     = './results/'
 RECORD_FOLDER   = 'optimisation'
-TEST_NAMES      = ['G44','G25'] # ['G32', 'G33', 'G44', 'G25']
-ERR_NAMES       = ['err_dy_min', 'err_x_area', 'err_x_fail'] # ['err_dy_min', 'err_x_area', 'err_y_area', 'err_x_fail', 'err_y_fail']
+TEST_NAMES      = ['G44', 'G25'] # ['G32', 'G33', 'G44', 'G25']
+ERR_NAMES       = ['err_dy_area', 'err_y_area', 'err_x_end', 'err_y_end'] # ['err_dy_min', 'err_dy_area', 'err_x_area', 'err_y_area', 'err_x_end', 'err_y_end']
 
 # Initialisation
 start_time = time.time()
