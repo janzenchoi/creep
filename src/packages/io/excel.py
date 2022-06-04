@@ -54,18 +54,21 @@ class Excel:
         return info_list
 
     # Writes to an excel (appends a number if the filename already exists)
-    def write_data(self, data, columns, path = '', file = '', sheet = '', max_files = 100):
+    def write_data(self, data, columns, path = '', file = '', sheet = '', max_files = 100, override = False):
         path, file, sheet = self.set_default(path, file, sheet)
         df = pd.DataFrame(data, columns = columns)
-        target_file = path + file + '.xlsx'        
-        for file_num in range(1, max_files):
-            try:
-                if os.path.isfile(target_file):
-                    target_file = path + file + ' (' + str(file_num) + ').xlsx'
-                df.to_excel(target_file, sheet_name = sheet)
-                break
-            except:
-                continue
+        target_file = path + file + '.xlsx'
+        if override:
+            df.to_excel(target_file, sheet_name = sheet)
+        else:
+            for file_num in range(1, max_files):
+                try:
+                    if os.path.isfile(target_file):
+                        target_file = path + file + ' (' + str(file_num) + ').xlsx'
+                    df.to_excel(target_file, sheet_name = sheet)
+                    break
+                except:
+                    continue
     
     # Appends to an existing excel
     def append_data(self, data, columns, path = '', file = '', sheet = ''):

@@ -25,6 +25,7 @@ class ViscoPlastic:
 
     # Constructor
     def __init__(self, stresses):
+        self.name = 'visco_plastic'
         self.params = PARAMS
         self.l_bnds = L_BNDS
         self.u_bnds = U_BNDS

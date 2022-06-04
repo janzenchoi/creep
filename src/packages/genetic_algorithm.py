@@ -23,16 +23,15 @@ MUTATION  = 0.35
 class MOGA:
     
     # Constructor
-    def __init__(self, model, objective):
+    def __init__(self, model, objective, num_gens = NUM_GENS, init_pop = INIT_POP, offspring = OFFSPRING, crossover = CROSSOVER, mutation = MUTATION):
 
         # Initialises the members
         self.problem = Problem(model, objective)
-        self.rec = None
-        self.num_gens  = NUM_GENS
-        self.init_pop  = INIT_POP
-        self.offspring = OFFSPRING
-        self.crossover = CROSSOVER
-        self.mutation  = MUTATION
+        self.num_gens  = num_gens
+        self.init_pop  = init_pop
+        self.offspring = offspring
+        self.crossover = crossover
+        self.mutation  = mutation
 
         # Defines the algorithm and termination condition
         self.algo = NSGA2(
@@ -51,7 +50,7 @@ class MOGA:
 
     # Runs the genetic optimisation
     def optimise(self):
-        params_list = minimize(self.problem, self.algo, self.term, verbose=True, seed=None).X
+        params_list = minimize(self.problem, self.algo, self.term, verbose=False, seed=None).X
         return params_list
 
 # The MOGA problem
@@ -61,6 +60,7 @@ class Problem(ElementwiseProblem):
     def __init__(self, model, objective):
         self.objective = objective
         self.model = model
+        self.rec = None
         super().__init__(
             n_var    = len(self.model.params),
             n_obj    = len(self.objective.err_collection),
@@ -73,5 +73,5 @@ class Problem(ElementwiseProblem):
         prd_x_data, prd_y_data = self.model.get_prd_curves(*params)
         err_list = self.objective.get_errors(prd_x_data, prd_y_data)
         if (self.rec != None):
-            self.rec.update_record(params, err_list)
+            self.rec.update_results(params, err_list)
         out['F'] = err_list
